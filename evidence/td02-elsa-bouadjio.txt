@@ -39,3 +39,5 @@ drwxrwxrwx+ 4 codespace root  4096 Oct 16 07:35 docs
 drwxrwxrwx+ 2 codespace root  4096 Oct 16 08:49 evidence
 -rw-rw-rw-  1 codespace root   133 Oct 16 07:35 requirements.txt
 drwxrwxrwx+ 2 codespace root  4096 Oct 16 07:35 src
+
+@e1saaa ➜ /workspaces/G06-T04 (elsa-bouadjio) $ git add /workspaces/G06-T04/evidence/td02-elsa-bouadjio.txt
