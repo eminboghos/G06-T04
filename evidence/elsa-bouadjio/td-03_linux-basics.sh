@@ -57,7 +57,7 @@ head data/sample/prices.csv
 # 2026-09-08,AAPL,251.90,253.90,250.70,252.40,44000000
 
 #grep 
- grep AAPL data/sample/prices.csv
+ grep AAPL gitata/sample/prices.csv
 #  @e1saaa ➜ /workspaces/G06-T04 (elsa-bouadjio) $ grep AAPL data/sample/prices.csv
 # 2026-09-01,AAPL,249.20,251.50,248.00,250.00,38000000
 # 2026-09-02,AAPL,250.80,252.80,249.60,251.30,39500000
