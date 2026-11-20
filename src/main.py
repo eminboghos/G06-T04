@@ -1,6 +1,20 @@
 from pathlib import Path
 import csv
 import json
+import sys
+
+# `python src/main.py` puts src/ (not the repo root) on sys.path,
+# so we add the repo root to make `from src.analytics import ...` work.
+ROOT_DIR = Path(__file__).resolve().parent.parent
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from src.analytics import (  # noqa: E402
+    align_series,
+    calculate_period_return,
+    calculate_base_100,
+    calculate_relative_performance,
+)
 
 
 DATA_DIR = Path("data/sample")
@@ -55,6 +69,43 @@ def main():
     print("Observations")
     print(f"{instrument['ticker']}: {len(instrument_prices)}")
     print(f"{benchmark['ticker']}: {len(benchmark_prices)}")
+
+    # --- TD07: instrument vs benchmark comparison ---
+    aligned_instrument, aligned_benchmark = align_series(
+        instrument_prices, benchmark_prices
+    )
+
+    instrument_return = calculate_period_return(aligned_instrument)
+    benchmark_return = calculate_period_return(aligned_benchmark)
+    relative_performance = calculate_relative_performance(
+        instrument_return, benchmark_return
+    )
+
+    instrument_base_100 = calculate_base_100(aligned_instrument)
+    benchmark_base_100 = calculate_base_100(aligned_benchmark)
+
+    instrument_label = instrument["ticker"]
+    benchmark_label = benchmark["ticker"]
+
+    print()
+    print("Comparison (aligned)")
+    print(f"{'Aligned sessions':<24}: {len(aligned_instrument)}")
+    print(f"{instrument_label + ' period return':<24}: {instrument_return:+.2f}%")
+    print(f"{benchmark_label + ' period return':<24}: {benchmark_return:+.2f}%")
+    print(
+        f"{'Relative performance':<24}: "
+        f"{relative_performance:+.2f} percentage points"
+    )
+    print()
+    print("Base 100")
+    print(
+        f"{instrument_label:<7}: {instrument_base_100[0]['value']:.2f} -> "
+        f"{instrument_base_100[-1]['value']:.2f}"
+    )
+    print(
+        f"{benchmark_label:<7}: {benchmark_base_100[0]['value']:.2f} -> "
+        f"{benchmark_base_100[-1]['value']:.2f}"
+    )
 
 
 if __name__ == "__main__":
