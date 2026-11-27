@@ -25,6 +25,14 @@ def load_prices():
 def filter_prices(prices, ticker):
     return [row for row in prices if row["ticker"] == ticker]
 
+def get_first_date(prices):
+    return prices[0]["date"]
+
+
+def get_last_date(prices):
+    return prices[-1]["date"]
+
+
 def get_first_close(prices):
     return float(prices[0]["close"])
 
@@ -39,6 +47,10 @@ def display_market_summary(asset, prices, show_currency=True):
 
     print(f"{asset['ticker']} - {asset['name']}")
     print(f"Observations : {len(prices)}")
+
+    print(f"First date   : {get_first_date(prices)}")
+    print(f"Last date    : {get_last_date(prices)}")
+
     print(f"First close  : {get_first_close(prices):.2f}{currency}")
     print(f"Last close   : {get_last_close(prices):.2f}{currency}")
 
@@ -53,12 +65,12 @@ def main():
     benchmark_prices = filter_prices(prices, benchmark["ticker"])
 
     print("=== MarketPulse ===")
+    print("Data source: Local CSV")
     print()
     print("Market configuration")
     print(f"Period   : {LOOKBACK_LABEL}")
     print(f"Interval : {INTERVAL_LABEL}")
     print()
-
     print("Instrument")
     display_market_summary(instrument, instrument_prices)
     print()
@@ -70,6 +82,5 @@ def main():
         show_currency=False,
     )
 
-    
 if __name__ == "__main__":
     main()
